@@ -78,27 +78,37 @@ export class LogsTableComponent implements OnInit, OnDestroy {
   }
 
   onFilterChange(filter: LogsFilter): void {
-    let filtered = [...this.logs];
+    const filtered: LogModel[] = [];
 
-    if (filter.itemType) {
-      filtered = filtered.filter(log => log.itemType === filter.itemType);
-    }
+    const hasDateFilter = filter.dateRange?.length === 2;
+    let startDate: Date | null = null;
+    let endDate: Date | null = null;
 
-    if (filter.action) {
-      filtered = filtered.filter(log => log.action === filter.action);
-    }
-
-    if (filter.dateRange?.length === 2) {
-      const startDate = new Date(filter.dateRange[0]);
+    if (hasDateFilter) {
+      startDate = new Date(filter.dateRange[0]);
       startDate.setHours(0, 0, 0, 0);
 
-      const endDate = new Date(filter.dateRange[1]);
+      endDate = new Date(filter.dateRange[1]);
       endDate.setHours(23, 59, 59, 999);
+    }
 
-      filtered = filtered.filter(log => {
+    for (const log of this.logs) {
+      if (filter.itemType && log.itemType !== filter.itemType) {
+        continue;
+      }
+
+      if (filter.action && log.action !== filter.action) {
+        continue;
+      }
+
+      if (hasDateFilter && startDate && endDate) {
         const logDate = new Date(log.date);
-        return logDate >= startDate && logDate <= endDate;
-      });
+        if (logDate < startDate || logDate > endDate) {
+          continue;
+        }
+      }
+
+      filtered.push(log);
     }
 
     this.filteredLogs = filtered;
