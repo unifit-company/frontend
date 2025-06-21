@@ -5,6 +5,7 @@ import { GlobalStateService } from '@core/services/global-state.service';
 import { UserService } from '@profile/services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { ButtonModule } from 'primeng/button';
+import { UserRole } from '@auth/domain/enums';
 
 @Component({
   selector: 'app-users-table',
@@ -13,6 +14,7 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './users-table.component.html',
 })
 export class UsersTableComponent implements OnInit {
+  public UserRole = UserRole;
   currentUserId: number = 0;
   users: UserModel[] = [];
   isLoading: boolean = true;
@@ -46,8 +48,15 @@ export class UsersTableComponent implements OnInit {
     });
   }
 
-  getRoleDisplay(role: string) {
-    return role === 'ADMIN' ? 'Administrador' : 'Usuário';
+  private roleLabels: Record<UserRole.Admin | UserRole.Colaborador, string> = {
+    [UserRole.Admin]: 'Administrador',
+    [UserRole.Colaborador]: 'Colaborador',
+  };
+
+  getRoleDisplay(roles: UserRole[] = []): string[] {
+    return roles
+      .filter(role => role === UserRole.Admin || role === UserRole.Colaborador)
+      .map(role => this.roleLabels[role] || role);
   }
 
   handleDeleteUser(userId: number) {

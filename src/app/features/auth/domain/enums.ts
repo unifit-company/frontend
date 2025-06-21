@@ -1,4 +1,5 @@
 export enum UserRole {
-  ADMIN = 'Admin',
-  USER = 'Colaborador',
+  Unifit = 'Unifit',
+  Admin = 'Admin',
+  Colaborador = 'Colaborador'
 }

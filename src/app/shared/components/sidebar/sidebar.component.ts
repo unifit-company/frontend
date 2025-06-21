@@ -41,7 +41,7 @@ export class SidebarComponent implements OnInit {
         if (!currentUser) return;
 
         this.user = currentUser;
-        this.isUserAdmin = currentUser.role === UserRole.ADMIN;
+        this.isUserAdmin = currentUser.roles.includes(UserRole.Admin);
       }
     );
 

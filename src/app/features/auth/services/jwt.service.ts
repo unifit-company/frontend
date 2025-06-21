@@ -1,7 +1,17 @@
 import { inject, Injectable } from '@angular/core';
 import { UserModel } from '@auth/domain/interfaces';
 import { AuthTokenService } from '@auth/services/auth-token.service';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { UserRole } from '@auth/domain/enums';
+
+interface KeycloakJwtPayload extends JwtPayload {
+  preferred_username: string;
+  email: string;
+  sub: string;
+  realm_access?: {
+    roles?: string[];
+  };
+}
 
 type JWTPayload = {
   preferred_username: string;
@@ -20,24 +30,30 @@ export class JWTService {
 
   jwtDecode(): UserModel | null {
     const token = this.authTokenService.getToken();
-
     if (!token) return null;
 
     try {
-      const decode = jwtDecode<JWTPayload>(token);
+      const decode = jwtDecode<KeycloakJwtPayload>(token);
+
+      const jwtRoles = decode.realm_access?.roles ?? [];
+      const roles = jwtRoles.filter((role): role is UserRole =>
+        Object.values(UserRole).includes(role as UserRole)
+      );
+
       return {
-        id: 1,
+        id: 0,
         name: decode.preferred_username,
         age: 0,
         weight: null,
         height: 0,
         email: decode.email,
-        role: decode.realm_access?.roles?.includes('ADMIN') ? 'ADMIN' : 'USER',
+        roles,
         userIdentifier: decode.sub,
+        trainingPlansIds: [],
       };
     } catch (error) {
       console.error('Erro em decodificar o token', error);
+      return null;
     }
-    return null;
   }
 }

@@ -19,6 +19,6 @@ export class AuthService {
 
   isAdmin(): boolean {
     const role = this.globalStateService.getCurrentUserRole();
-    return role === UserRole.ADMIN;
+    return role === UserRole.Admin;
   }
 }

@@ -1,3 +1,5 @@
+import { UserRole } from './enums';
+
 export type LoginRequest = {
   username: string;
   password: string;
@@ -21,10 +23,10 @@ export type UserModel = {
   id: number;
   name: string;
   email: string;
-  role: string;
-  age: number;
-  weight: any;
-  height: number;
+  roles: UserRole[];
+  age: number | null;
+  weight: number | null;
+  height: number | null;
   trainingPlansIds?: number[];
   userIdentifier: string;
 };

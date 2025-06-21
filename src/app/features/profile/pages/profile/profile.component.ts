@@ -53,7 +53,7 @@ export class ProfileComponent implements OnInit {
 
     this.user = {
       ...user,
-      weight: user.weight ? { ...user.weight } : { value: 0, recordAt: '' },
+      weight: user.weight,
     };
     this.resetEditUser();
   }
@@ -63,12 +63,9 @@ export class ProfileComponent implements OnInit {
       id: 0,
       name: '',
       email: '',
-      role: UserRole.USER,
+      roles: [UserRole.Colaborador],
       age: 0,
-      weight: {
-        value: 0,
-        recordAt: '',
-      },
+      weight: 0,
       height: 0,
       userIdentifier: '',
     };
@@ -77,9 +74,6 @@ export class ProfileComponent implements OnInit {
   resetEditUser() {
     this.editUser = {
       ...this.user,
-      weight: this.user.weight
-        ? { ...this.user.weight }
-        : { value: 0, recordAt: '' },
     };
   }
 
@@ -99,9 +93,6 @@ export class ProfileComponent implements OnInit {
       next: (updatedUser: UserModel) => {
         this.user = {
           ...updatedUser,
-          weight: updatedUser.weight
-            ? { ...updatedUser.weight }
-            : { value: 0, recordAt: '' },
         };
         this.resetEditUser();
         this.globalStateService.setCurrentUser(updatedUser);

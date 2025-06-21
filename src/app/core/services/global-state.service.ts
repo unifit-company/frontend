@@ -36,6 +36,11 @@ export class GlobalStateService {
 
   getCurrentUserRole(): string {
     const currentUser = this.currentUserSubject.value;
-    return currentUser ? currentUser.role : UserRole.USER;
+    if (currentUser && currentUser.roles.length > 0) {
+      if (currentUser.roles.includes(UserRole.Admin)) {
+        return UserRole.Admin;
+      }
+    }
+    return UserRole.Colaborador;
   }
 }
