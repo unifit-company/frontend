@@ -1,9 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { authGuard } from '@core/guards/auth.guard';
-import { userResolver } from '@core/resolvers/user.resolver';
 import { AppLayoutComponent } from '@shared/components/app-layout/app-layout.component';
-import { adminGuard } from './features/admin/guards/admin.guard';
 
 export const routes: Routes = [
   {
@@ -14,10 +11,10 @@ export const routes: Routes = [
   {
     path: 'app',
     component: AppLayoutComponent,
-    canActivate: [authGuard],
-    resolve: {
-      user: userResolver,
-    },
+    // canActivate: [authGuard],
+    // resolve: {
+    //   user: userResolver,
+    // },
     children: [
       {
         path: '',
@@ -45,7 +42,7 @@ export const routes: Routes = [
         title: 'Admin - Unifit',
         loadChildren: () =>
           import('./features/admin/admin.module').then(m => m.AdminModule),
-        canActivate: [adminGuard],
+        // canActivate: [adminGuard],
       },
     ],
   },
