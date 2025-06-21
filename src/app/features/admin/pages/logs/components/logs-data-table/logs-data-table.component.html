@@ -1,0 +1,106 @@
+<div
+  class="flex flex-col h-full overflow-hidden bg-white border rounded-md shadow-sm"
+>
+  <div *ngIf="isLoading" class="flex items-center justify-center h-full py-8">
+    <div class="flex flex-col items-center">
+      <i class="mb-2 text-3xl text-gray-500 pi pi-spin pi-spinner"></i>
+      <span class="text-gray-500">Carregando logs...</span>
+    </div>
+  </div>
+
+  <div
+    *ngIf="isEmpty && !isLoading"
+    class="flex flex-col items-center justify-center h-full py-12"
+  >
+    <div
+      class="flex items-center justify-center w-10 h-10 mb-4 bg-gray-100 rounded-full"
+    >
+      <i class="p-0 text-3xl text-gray-400 pi pi-inbox"></i>
+    </div>
+    <h3 class="mb-1 text-lg font-medium text-gray-700">
+      Nenhum log encontrado
+    </h3>
+    <p class="text-sm text-gray-500" *ngIf="hasFilters">
+      Tente mudar ou remover os filtros aplicados.
+    </p>
+  </div>
+
+  <div *ngIf="!isEmpty && !isLoading" class="flex flex-col h-full">
+    <div class="h-full overflow-auto">
+      <table class="min-w-full table-fixed">
+        <thead class="sticky top-0 z-10 bg-gray-50">
+          <tr>
+            <th
+              class="w-16 px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+            >
+              ID
+            </th>
+            <th
+              class="w-1/6 px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+            >
+              Tipo
+            </th>
+            <th
+              class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+            >
+              Nome
+            </th>
+            <th
+              class="w-1/6 px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+            >
+              Usuário
+            </th>
+            <th
+              class="w-24 px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+            >
+              Ação
+            </th>
+            <th
+              class="w-1/6 px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+            >
+              Data
+            </th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <tr
+            *ngFor="let log of logs; trackBy: trackByFn"
+            class="hover:bg-gray-50"
+          >
+            <td
+              class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap"
+            >
+              {{ log.itemId }}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+              {{ log.itemType }}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500 truncate">
+              {{ log.itemName }}
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+              {{ log.user }}
+            </td>
+            <td class="px-6 py-4 text-sm whitespace-nowrap">
+              <span
+                class="inline-flex items-center px-2 py-1 text-xs font-semibold leading-5 rounded-full"
+                [ngClass]="getActionClass(log.action)"
+              >
+                {{ log.action }}
+              </span>
+            </td>
+            <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+              {{ formatDate(log.date) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="flex-shrink-0 px-6 py-3 border-t">
+      <div class="text-sm text-gray-500">
+        Exibindo {{ logs.length }} registro(s)
+      </div>
+    </div>
+  </div>
+</div>

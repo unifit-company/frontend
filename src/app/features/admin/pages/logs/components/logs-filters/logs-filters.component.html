@@ -1,0 +1,134 @@
+<div class="flex-shrink-0 p-4 bg-white border rounded-md shadow-sm">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-medium text-gray-700">Filtros</h3>
+    <span
+      *ngIf="hasActiveFilters()"
+      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800"
+    >
+      {{ getActiveFilterCount() }} filtro(s) ativo(s)
+    </span>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div class="flex flex-col">
+      <label for="itemType" class="mb-1 text-sm font-medium text-gray-700">
+        Tipo de Item
+      </label>
+      <p-dropdown
+        id="itemType"
+        [options]="itemTypes"
+        [(ngModel)]="selectedItemType"
+        placeholder="Todos os tipos"
+        [showClear]="true"
+        styleClass="w-full"
+        [style]="{ 'min-height': '38px' }"
+        appendTo="body"
+        [disabled]="isLoading"
+      ></p-dropdown>
+    </div>
+
+    <div class="flex flex-col">
+      <label for="actionType" class="mb-1 text-sm font-medium text-gray-700">
+        Tipo de Ação
+      </label>
+      <p-dropdown
+        id="actionType"
+        [options]="actionTypes"
+        [(ngModel)]="selectedAction"
+        placeholder="Todas as ações"
+        [showClear]="true"
+        styleClass="w-full"
+        [style]="{ 'min-height': '38px' }"
+        appendTo="body"
+        [disabled]="isLoading"
+      ></p-dropdown>
+    </div>
+
+    <div class="flex flex-col">
+      <label for="dateRange" class="mb-1 text-sm font-medium text-gray-700">
+        Período
+      </label>
+      <p-calendar
+        id="dateRange"
+        [(ngModel)]="dateRange"
+        selectionMode="range"
+        [readonlyInput]="true"
+        dateFormat="dd/mm/yy"
+        placeholder="Selecione um período"
+        styleClass="w-full"
+        [style]="{ 'min-height': '38px' }"
+        appendTo="body"
+        [disabled]="isLoading"
+        [maxDate]="today"
+        [showButtonBar]="true"
+        [firstDayOfWeek]="0"
+        [touchUI]="false"
+      ></p-calendar>
+    </div>
+
+    <div class="flex items-end gap-2">
+      <button
+        pButton
+        label="Aplicar Filtros"
+        icon="pi pi-filter"
+        (click)="applyFilters()"
+        class="!bg-emerald-500 hover:!bg-emerald-600 !border-emerald-500 flex-1"
+        [disabled]="isLoading || !hasFiltersToApply()"
+      ></button>
+      <button
+        pButton
+        label="Limpar"
+        icon="pi pi-trash"
+        (click)="clearFilters()"
+        class="!bg-gray-200 !text-gray-700 hover:!bg-gray-300"
+        [disabled]="isLoading"
+        *ngIf="hasActiveFilters()"
+      ></button>
+    </div>
+  </div>
+
+  <div *ngIf="hasActiveFilters()" class="flex flex-wrap gap-2 mt-4">
+    <span
+      *ngIf="appliedItemType"
+      class="inline-flex items-center px-3 py-1 text-sm text-blue-700 rounded-full bg-blue-50"
+    >
+      Tipo: {{ appliedItemType }}
+      <button
+        class="ml-2 text-blue-400 hover:text-blue-600"
+        (click)="removeItemTypeFilter()"
+        type="button"
+      >
+        <i class="pi pi-times"></i>
+      </button>
+    </span>
+
+    <span
+      *ngIf="appliedAction"
+      class="inline-flex items-center px-3 py-1 text-sm text-purple-700 rounded-full bg-purple-50"
+    >
+      Ação: {{ appliedAction }}
+      <button
+        class="ml-2 text-purple-400 hover:text-purple-600"
+        (click)="removeActionFilter()"
+        type="button"
+      >
+        <i class="pi pi-times"></i>
+      </button>
+    </span>
+
+    <span
+      *ngIf="appliedDateRange && appliedDateRange.length === 2"
+      class="inline-flex items-center px-3 py-1 text-sm rounded-full bg-amber-50 text-amber-700"
+    >
+      Período: {{ formatDateShort(appliedDateRange[0]) }} -
+      {{ formatDateShort(appliedDateRange[1]) }}
+      <button
+        class="ml-2 text-amber-400 hover:text-amber-600"
+        (click)="removeDateFilter()"
+        type="button"
+      >
+        <i class="pi pi-times"></i>
+      </button>
+    </span>
+  </div>
+</div>

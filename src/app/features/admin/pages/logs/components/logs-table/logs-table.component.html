@@ -1,0 +1,22 @@
+<div class="flex flex-col h-full">
+  <app-logs-filters
+    class="flex-shrink-0"
+    [isLoading]="isLoading"
+    [itemTypes]="itemTypes"
+    [actionTypes]="actionTypes"
+    (filterChange)="onFilterChange($event)"
+    (filterClear)="onFilterClear()"
+  >
+  </app-logs-filters>
+
+  <div class="h-4"></div>
+
+  <app-logs-data-table
+    class="flex-1 overflow-hidden"
+    [logs]="filteredLogs"
+    [isLoading]="isLoading"
+    [isEmpty]="isEmpty"
+    [hasFilters]="hasFilters"
+  >
+  </app-logs-data-table>
+</div>
