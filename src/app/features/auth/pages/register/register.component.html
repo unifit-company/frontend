@@ -14,6 +14,20 @@
     (submit)="handleSubmit()"
     ngNativeValidate
   >
+
+    <!--Campo 'username' adicionado: obrigatório pelo backend/Keycloak para criar a conta-->
+    <div class="flex flex-col gap-1">
+      <input
+        pInputText
+        required
+        type="text"
+        name="username"
+        formControlName="username"
+        placeholder="Nome de usuário"
+        class="p-inputtext-sm hover:!border-emerald-500 focus-within:!border-emerald-500"
+      />
+    </div>
+
     <div class="flex flex-col gap-1">
       <input
         pInputText
