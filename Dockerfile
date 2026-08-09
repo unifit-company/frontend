@@ -8,6 +8,6 @@ RUN npm run build --configuration=production
 
 # Etapa final - servir com nginx
 FROM nginx:alpine
-COPY --from=build /app/dist/unifit /usr/share/nginx/html
+COPY --from=build /app/dist/unifit/browser /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
