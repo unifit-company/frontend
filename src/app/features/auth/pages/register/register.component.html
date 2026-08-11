@@ -8,10 +8,12 @@
     </p>
   </div>
 
+  <!--Troca o (submit) por (ngSubmit): apenas o submit não previe o comportamento nativo
+  do formulário, causando envio duplicado (create + 409 na segunda tentativa)-->
   <form
     [formGroup]="registerForm"
     class="flex flex-col gap-2"
-    (submit)="handleSubmit()"
+    (ngSubmit)="handleSubmit()"
     ngNativeValidate
   >
 
