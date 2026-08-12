@@ -41,8 +41,11 @@ export class RegisterComponent {
 
   private createForm(): FormGroup {
     return this.formBuilder.group({
-      email: [''],
-      password: [''],
+      //Campo 'username' adicionado: o backend e o Keycloak exigem
+      //esse campo para criar o usuario
+      username: ['', Validators.required],
+      email: ['', Validators.required],
+      password: ['', Validators.required],
     });
   }
 
